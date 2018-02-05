@@ -1,3 +1,5 @@
+
+yes
 /*
 chatServer.js
 Author: David Goedicke (da.goedicke@gmail.com)
@@ -30,7 +32,7 @@ io.on('connect', function(socket) {
   var questionNum = 0; // keep count of question, used for IF condition.
   socket.on('loaded', function(){// we wait until the client has loaded and contacted us that it is ready to go.
 
-  socket.emit('answer',"Hey, Someone told me that you may be sad."); //We start with the introduction;
+  socket.emit('answer',"Hey, Hello I am \"___*-\" a simple chat bot example."); //We start with the introduction;
   setTimeout(timedQuestion, 2500, socket,"What is your Name?"); // Wait a moment and respond with a question.
 
 });
@@ -56,12 +58,12 @@ function bot(data,socket,questionNum) {
   question = 'Let\'s get to know each other! What is your favorite food.';			    	// load next question
   }
   else if (questionNum == 1) {
-  answer= 'Really!? ' + input + ' is my favorite food too!';// output response
+  answer= 'Really!? ' + input + 'is my favorite food too!';// output response
   waitTime =2000;
   question = 'What do you do for fun?';			    	// load next question
   }
   else if (questionNum == 2) {
-  answer= ' That sounds awesome! I have never done that!';
+  answer= ' That sounds awesome! I have never ' + input+'ed.';
   waitTime =2000;
   question = 'What color calms you the most?';			    	// load next question
   }
@@ -79,54 +81,43 @@ function bot(data,socket,questionNum) {
     }
     else if(input.toLowerCase()==='no'|| input===0){
         socket.emit('changeFont','white'); /// we really should look up the inverse of what we said befor.
-        answer='Lets Change That';
-        question='Can you read this?';
-        waitTime =2000;
-        questionNum --; // Here we go back in the question number this can end up in a loop
-    }
-    else{
-      answer=' I did not understand you. Can you please answer with simply with yes or no.';
-      question='Lets try this again. Can you read the font? ';
-      questionNum --;
-      waitTime =10;
+        answer='How about now?'
+        question='';
+        waitTime =0;
+        questionNum--; // Here we go back in the question number this can end up in a loop
+    }else{
+      answer=' I did not understand you. Can you please answer with simply with yes or no.'
+      question='';
+      questionNum--;
+      waitTime =0;
     }
   // load next question
   }
-  else if (questionNum ==5) {
+else if (questionNum ==5) {
     if(input.toLowerCase()==='yes' || input===1){
-      answer ='I am so sorry you feel that way.';
+      answer ='I am so sorry you feel that way.'
       waitTime=2000;
-      question = 'Have you talked to anyone in your family about that?';
+      question = 'Have you talked to anyone in your family about that?'
     }
     else if (input.toLowerCase()==='no' || input===0){
-        answer='That is great! I am glad that you feel well!';
-        question='Lets assume that you have felt sad before. Have you ever talked to your family about your feelings?';
-        waitTime = 2000;
-       // Here we go back in the question number this can end up in a loop
-    }
-    else{
+        answer='Really!?'
+        question='Your family loves you! you should really talk to them about your feelings! ';
+        waitTime =0;
+        questionNum--; // Here we go back in the question number this can end up in a loop
+    }else{
       answer=' I did not understand you. Can you please answer with simply with yes or no.'
-      question='Lets try this again. Are you sad?';
+      question='';
       questionNum--;
       waitTime = 0;
-    }
-  }
-  else if (questionNum ==6) {
-    if(input.toLowerCase()==='yes' || input===1){
-      answer ='Good. Your family is your strongest resource';
-      waitTime=3000;
-      question = 'Write this with me... "I promise to always tell someone if I am feeling sad" ';
-     }
-    else if (input.toLowerCase()==='no' || input===0){
-        answer='Really!? Your Family loves you and you should really talk to them about your feelings.';
-        waitTime = 3000;
-	question = 'Write this with me... "I promise to always tell someone if I am feeling sad" ';
-    }
-  }
- else if (questionNum == 7) {
-   answer = 'Good! I hope you feel better soon!';
-   waitTime = 10000;
 }
+
+  else{
+    answer= 'I have nothing more to say!';// output response
+    waitTime =0;
+    question = '';
+  }
+
+
 
 /// We take the changed data and distribute it across the required objects.
   socket.emit('answer',answer);
